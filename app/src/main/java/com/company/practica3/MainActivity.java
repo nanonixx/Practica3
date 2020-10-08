@@ -12,27 +12,45 @@ import android.view.MenuItem;
 
 import com.company.practica3.databinding.ActivityMainBinding;
 
-public class MainActivity<ActivityDrawerBinding> extends AppCompatActivity {
+public class MainActivity<Binding> extends AppCompatActivity {
 
-        ActivityMainBinding binding;
+    ActivityMainBinding binding;
+    private NavController navController;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView((binding = ActivityMainBinding.inflate(getLayoutInflater())).getRoot());
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView((binding = ActivityMainBinding.inflate(getLayoutInflater())).getRoot());
 
-            setSupportActionBar(binding.toolbar);
+        setSupportActionBar(binding.toolbar);
 
-            AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                    // Top-level destinations:
-                    R.id.drawer1Fragment, R.id.drawer2Fragment
-            )
-                    .setOpenableLayout(binding.drawerLayout)
-                    .build();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                // Top-level destinations:
+                R.id.drawer1Fragment, R.id.drawer2Fragment
+        )
+                .setOpenableLayout(binding.drawerLayout)
+                .build();
 
-            NavController navController = ((NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)).getNavController();
-            NavigationUI.setupWithNavController(binding.navView, navController);
-            NavigationUI.setupWithNavController(binding.toolbar, navController, appBarConfiguration);
+        navController = ((NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment)).getNavController();
 
-        }
+        NavigationUI.setupWithNavController(binding.navView, navController);
+        NavigationUI.setupWithNavController(binding.bottomNavView, navController);
+        NavigationUI.setupWithNavController(binding.toolbar, navController, appBarConfiguration);
+
+
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return NavigationUI.onNavDestinationSelected(item, navController)
+                || super.onOptionsItemSelected(item);
+    }
+
+}
+
