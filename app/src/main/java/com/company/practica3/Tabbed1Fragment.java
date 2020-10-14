@@ -27,8 +27,7 @@ public class Tabbed1Fragment extends Fragment {
         binding.viewPager.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
             @Override
-            public Fragment createFragment(int position) {
-                switch (position) {
+            public Fragment createFragment(int position) {                switch (position) {
                     case 0: default:
                         return new Tabbed1AFragment();
                     case 1:
